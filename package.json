@@ -1,0 +1,29 @@
+{
+  "name": "elasticquery",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "lib/ElasticSearch.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shnhrrsn/elasticquery.git"
+  },
+  "dependencies": {
+    "debug": "^4.1.0",
+    "elasticsearch": "^14.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-grind": "^0.8.0-beta.1",
+    "eslint": "^3.3.0",
+    "eslint-config-grind": "^2.0.0",
+    "eslint-plugin-import-auto-name": "^1.0.3"
+  },
+  "engines": {
+    "node": ">=8.6"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "prepare": "bin/build"
+  }
+}
