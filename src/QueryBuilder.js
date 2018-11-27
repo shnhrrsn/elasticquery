@@ -423,6 +423,15 @@ export class QueryBuilder {
 						[`${prefix}${condition.field}`]: match
 					}
 				}
+			} else if(condition.type === 'match_phrase') {
+				return {
+					match_phrase: {
+						[`${prefix}${condition.field}`]: {
+							query: condition.value,
+							slop: (condition.slop || 0)
+						}
+					}
+				}
 			} else if(condition.type === 'match_phrase_prefix') {
 				return {
 					match_phrase_prefix: {
