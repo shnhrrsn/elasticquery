@@ -126,6 +126,14 @@ export class QueryBuilder {
 	}
 
 	whereIn(field, values) {
+		this._must.push({
+			type: 'terms',
+			field: field,
+			value: values
+		})
+	}
+
+	whereInLegacy(field, values) {
 		return this.where(builder => {
 			for(const value of values) {
 				builder.orWhere(field, value)
