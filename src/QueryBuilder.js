@@ -104,6 +104,23 @@ export class QueryBuilder {
 		}
 	}
 
+	matchPhrase(field, value, options = { }) {
+		return this._matchPhrase(field, value, '_must', options)
+	}
+
+	orMatchPhrase(field, value, options = { }) {
+		return this._matchPhrase(field, value, '_should', options)
+	}
+
+	_matchPhrase(field, value, type, options = { }) {
+		this[type].push({
+			type: 'match_phrase',
+			field: field,
+			value: value,
+			...options
+		})
+	}
+
 	matchPhrasePrefix(field, value, options = { }) {
 		return this._matchPhrasePrefix(field, value, '_must', options)
 	}
