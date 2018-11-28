@@ -387,9 +387,9 @@ export class QueryBuilder {
 						[`${prefix}${condition.field}`]: range
 					}
 				}
-			} else if(condition.type === 'term') {
+			} else if(condition.type === 'term' || condition.type === 'terms') {
 				return {
-					term: {
+					[condition.type]: {
 						[`${prefix}${condition.field}`]: condition.value
 					}
 				}
