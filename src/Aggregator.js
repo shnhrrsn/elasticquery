@@ -93,6 +93,7 @@ export class Aggregator {
 
 			if(prefix.isNil) {
 				aggregations = aggregation.aggregations
+				aggregation.aggregations = { [this.field]: aggregations }
 			} else {
 				aggregations = { }
 				aggregation.aggregations[this.field] = aggregations
