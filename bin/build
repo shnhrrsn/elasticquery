@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
 rm -fr lib && mkdir -p lib
-
-BABEL_TARGET_VERSION=8.6 babel -s inline -d lib/ src/
+babel -s inline -d lib/ src/
