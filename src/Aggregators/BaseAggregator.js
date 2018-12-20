@@ -1,12 +1,11 @@
-import './QueryBuilder'
+import '../QueryBuilder'
 
-export class Aggregator {
+export class BaseAggregator {
 
+	type = null
 	field = null
 	additionalFields = [ ]
 	_size = 100
-	_include = null
-	_exclude = null
 	_filter = null
 
 	constructor(field) {
@@ -15,16 +14,6 @@ export class Aggregator {
 
 	addField(field) {
 		this.additionalFields.push(field)
-		return this
-	}
-
-	include(value) {
-		this._include = value
-		return this
-	}
-
-	exclude(value) {
-		this._exclude = value
 		return this
 	}
 
@@ -52,22 +41,7 @@ export class Aggregator {
 		}
 
 		const aggregation = { }
-
-		aggregation.terms = {
-			field: this.field
-		}
-
-		if(!this._include.isNil) {
-			aggregation.terms.includes = this._include
-		}
-
-		if(!this._exclude.isNil) {
-			aggregation.terms.excludes = this._exclude
-		}
-
-		if(!this._size.isNil) {
-			aggregation.terms.size = this._size
-		}
+		aggregation[this.type] = this.buildAggregation()
 
 		if(this.additionalFields.length > 0) {
 			aggregation.aggregations = { }
@@ -99,8 +73,8 @@ export class Aggregator {
 				aggregation.aggregations[this.field] = aggregations
 			}
 
-			aggregations.terms = aggregation.terms
-			delete aggregation.terms
+			aggregations[this.type] = aggregation[this.type]
+			delete aggregation[this.type]
 
 			if(!otherAggregations.isNil) {
 				aggregations.aggregations = otherAggregations
@@ -119,6 +93,18 @@ export class Aggregator {
 				[this.field]: aggregation
 			}
 		}
+	}
+
+	buildAggregation() {
+		const aggregation = {
+			field: this.field
+		}
+
+		if(!this._size.isNil) {
+			aggregation.size = this._size
+		}
+
+		return aggregation
 	}
 
 }

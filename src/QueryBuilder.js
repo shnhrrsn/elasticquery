@@ -1,5 +1,7 @@
 /* eslint-disable max-lines */
-import './Aggregator'
+import './Aggregators/TermsAggregator'
+import './Aggregators/HistogramAggregator'
+import './Aggregators/DateHistogramAggregator'
 
 const debug = require('debug')('elasticquery')
 
@@ -324,11 +326,23 @@ export class QueryBuilder {
 	}
 
 	aggregate(field, callback) {
+		return this._aggregate(TermsAggregator, field, callback)
+	}
+
+	histogram(field, callback) {
+		return this._aggregate(HistogramAggregator, field, callback)
+	}
+
+	dateHistogram(field, callback) {
+		return this._aggregate(DateHistogramAggregator, field, callback)
+	}
+
+	_aggregate(aggregatorType, field, callback) {
 		if(this._subQuery) {
 			throw new Error('`aggregate` may only be called on a top level query.')
 		}
 
-		const aggregator = new Aggregator(field)
+		const aggregator = new aggregatorType(field)
 		callback(aggregator)
 		this._aggregators.push(aggregator)
 
