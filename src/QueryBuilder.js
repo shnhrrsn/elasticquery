@@ -148,6 +148,8 @@ export class QueryBuilder {
 			field: field,
 			value: values
 		})
+
+		return this
 	}
 
 	whereInLegacy(field, values) {
