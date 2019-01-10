@@ -1,8 +1,8 @@
 <p align="center">
 <a href="https://travis-ci.org/shnhrrsn/elasticquery"><img src="https://img.shields.io/travis/shnhrrsn/elasticquery.svg" alt="Build Status"></a>
-<a href="https://www.npmjs.com/package/elasticquery"><img src="https://img.shields.io/npm/dt/elasticquery.svg" alt="Total Downloads"></a>
-<a href="https://www.npmjs.com/package/elasticquery"><img src="https://img.shields.io/npm/v/elasticquery.svg" alt="Latest Version"></a>
-<a href="https://www.npmjs.com/package/elasticquery"><img src="https://img.shields.io/npm/l/elasticquery.svg" alt="License"></a>
+<a href="https://www.npmjs.com/package/@shnhrrsn/elasticquery"><img src="https://img.shields.io/npm/dt/@shnhrrsn/elasticquery.svg" alt="Total Downloads"></a>
+<a href="https://www.npmjs.com/package/@shnhrrsn/elasticquery"><img src="https://img.shields.io/npm/v/@shnhrrsn/elasticquery.svg" alt="Latest Version"></a>
+<a href="https://www.npmjs.com/package/@shnhrrsn/elasticquery"><img src="https://img.shields.io/npm/l/@shnhrrsn/elasticquery.svg" alt="License"></a>
 </p>
 
 # ElasticQuery
@@ -14,13 +14,13 @@ ElasticQuery is an easy to use query builder for the rather verbose ElasticSearc
 ### yarn
 
 ```bash
-yarn add elasticquery
+yarn add @shnhrrsn/elasticquery
 ```
 
 ### npm
 
 ```bash
-npm install --save elasticquery
+npm install --save @shnhrrsn/elasticquery
 ```
 
 ## Documentation
@@ -32,7 +32,7 @@ TODO! In the mean time, check out some [examples](#examples) below, the [tests](
 ### Create a Connection
 
 ```javascript
-const { ElasticSearch } = require('elasticquery')
+const { ElasticSearch } = require('@shnhrrsn/elasticquery')
 const search = new ElasticSearch({
   host: 'localhost:9200'
   index: 'locations'
