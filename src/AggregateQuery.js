@@ -1,8 +1,12 @@
 import './QueryComponent'
 
+import './Aggregators/AverageAggregator'
+import './Aggregators/CountAggregator'
 import './Aggregators/DateHistogramAggregator'
 import './Aggregators/FilterAggregator'
 import './Aggregators/HistogramAggregator'
+import './Aggregators/MaxAggregator'
+import './Aggregators/MinAggregator'
 import './Aggregators/SumAggregator'
 import './Aggregators/TermsAggregator'
 
@@ -45,6 +49,22 @@ export class AggregateQuery extends QueryComponent {
 
 	dateHistogram(field, callback) {
 		return this._aggregate(DateHistogramAggregator, field, callback)
+	}
+
+	average(field, callback) {
+		return this._aggregate(AverageAggregator, field, callback)
+	}
+
+	count(field, callback) {
+		return this._aggregate(CountAggregator, field, callback)
+	}
+
+	min(field, callback) {
+		return this._aggregate(MinAggregator, field, callback)
+	}
+
+	max(field, callback) {
+		return this._aggregate(MaxAggregator, field, callback)
 	}
 
 	sum(field, callback) {

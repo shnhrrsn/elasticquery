@@ -169,3 +169,59 @@ test('date histogram + filter', t => {
 		}
 	})
 })
+
+test('average', t => {
+	const query = new QueryBuilder
+	query.aggregate(query => query.average('field', query))
+
+	t.deepEqual(query.toBody(), {
+		_source: {},
+		aggregations: {
+			field: {
+				avg: { field: 'field' }
+			}
+		}
+	})
+})
+
+test('min', t => {
+	const query = new QueryBuilder
+	query.aggregate(query => query.min('field', query))
+
+	t.deepEqual(query.toBody(), {
+		_source: {},
+		aggregations: {
+			field: {
+				min: { field: 'field' }
+			}
+		}
+	})
+})
+
+test('max', t => {
+	const query = new QueryBuilder
+	query.aggregate(query => query.max('field', query))
+
+	t.deepEqual(query.toBody(), {
+		_source: {},
+		aggregations: {
+			field: {
+				max: { field: 'field' }
+			}
+		}
+	})
+})
+
+test('count', t => {
+	const query = new QueryBuilder
+	query.aggregate(query => query.count('field', query))
+
+	t.deepEqual(query.toBody(), {
+		_source: {},
+		aggregations: {
+			field: {
+				value_count: { field: 'field' }
+			}
+		}
+	})
+})
