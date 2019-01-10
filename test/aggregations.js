@@ -8,7 +8,6 @@ test('terms', t => {
 	})
 
 	t.deepEqual(query.toBody(), {
-		_source: { },
 		aggregations: {
 			field: {
 				terms: {
@@ -28,7 +27,6 @@ test('terms + filter', t => {
 	})
 
 	t.deepEqual(query.toBody(), {
-		_source: { },
 		aggregations: {
 			field: {
 				filter: {
@@ -65,7 +63,6 @@ test('terms + sums', t => {
 	})
 
 	t.deepEqual(query.toBody(), {
-		_source: {},
 		aggregations: {
 			field: {
 				aggregations: {
@@ -102,7 +99,6 @@ test('date histogram', t => {
 	})
 
 	t.deepEqual(query.toBody(), {
-		_source: { },
 		aggregations: {
 			field: {
 				date_histogram: {
@@ -138,7 +134,6 @@ test('date histogram + filter', t => {
 	})
 
 	t.deepEqual(query.toBody(), {
-		_source: { },
 		aggregations: {
 			field: {
 				filter: {
@@ -175,7 +170,6 @@ test('average', t => {
 	query.aggregate(query => query.average('field', query))
 
 	t.deepEqual(query.toBody(), {
-		_source: {},
 		aggregations: {
 			field: {
 				avg: { field: 'field' }
@@ -189,7 +183,6 @@ test('min', t => {
 	query.aggregate(query => query.min('field', query))
 
 	t.deepEqual(query.toBody(), {
-		_source: {},
 		aggregations: {
 			field: {
 				min: { field: 'field' }
@@ -203,7 +196,6 @@ test('max', t => {
 	query.aggregate(query => query.max('field', query))
 
 	t.deepEqual(query.toBody(), {
-		_source: {},
 		aggregations: {
 			field: {
 				max: { field: 'field' }
@@ -217,7 +209,6 @@ test('count', t => {
 	query.aggregate(query => query.count('field', query))
 
 	t.deepEqual(query.toBody(), {
-		_source: {},
 		aggregations: {
 			field: {
 				value_count: { field: 'field' }

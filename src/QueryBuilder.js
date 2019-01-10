@@ -474,7 +474,6 @@ export class QueryBuilder extends QueryComponent {
 
 	toBody() {
 		const body = this.build()
-		body._source = { }
 
 		if(body.query.isNil || Object.keys(body.query).length === 0) {
 			delete body.query
