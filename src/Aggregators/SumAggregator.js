@@ -1,6 +1,6 @@
-import './BaseAggregator'
+import './BaseMissingAggregator'
 
-export class SumAggregator extends BaseAggregator {
+export class SumAggregator extends BaseMissingAggregator {
 
 	type = 'sum'
 

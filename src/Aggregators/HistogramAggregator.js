@@ -1,6 +1,6 @@
-import './BaseAggregator'
+import './BaseMissingAggregator'
 
-export class HistogramAggregator extends BaseAggregator {
+export class HistogramAggregator extends BaseMissingAggregator {
 
 	type = 'histogram'
 	_interval = null
