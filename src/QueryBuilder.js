@@ -443,7 +443,7 @@ export class QueryBuilder extends QueryComponent {
 					}
 				}
 			} else if(condition.type === 'sub') {
-				return condition.builder.build(fieldPrefix)
+				return condition.builder.build(fieldPrefix).query
 			} else if(condition.type === 'nested') {
 				return {
 					nested: {
