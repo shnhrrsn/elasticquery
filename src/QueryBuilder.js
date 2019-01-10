@@ -1,16 +1,13 @@
 /* eslint-disable max-lines */
-import './Aggregators/TermsAggregator'
-import './Aggregators/HistogramAggregator'
-import './Aggregators/DateHistogramAggregator'
+import './QueryComponent'
 
 const debug = require('debug')('elasticquery')
 
-export class QueryBuilder {
+export class QueryBuilder extends QueryComponent {
 
 	_must = [ ]
 	_mustNot = [ ]
 	_should = [ ]
-	_aggregators = [ ]
 	_sort = null
 	_from = null
 	_size = null
@@ -21,9 +18,10 @@ export class QueryBuilder {
 	_type = null
 	_index = null
 	_search = null
-	_subQuery = false
 
 	constructor(type, index, search) {
+		super()
+
 		this._type = type
 		this._index = index
 		this._search = search
@@ -69,7 +67,7 @@ export class QueryBuilder {
 		if(typeof field === 'string') {
 			if(typeof filter === 'function') {
 				const builder = new QueryBuilder
-				builder._subQuery = true
+				builder.parent = this
 				filter(builder)
 
 				const nestedPath = field.indexOf('.') === -1 ? void 0 : field.split(/\./)[0]
@@ -193,7 +191,7 @@ export class QueryBuilder {
 	_where(args, type) {
 		if(typeof args[0] === 'function') {
 			const builder = new QueryBuilder
-			builder._subQuery = true
+			builder.parent = this
 
 			args[0](builder, ...args.slice(1))
 			this[type].push({
@@ -221,7 +219,7 @@ export class QueryBuilder {
 
 	nested(field, callback) {
 		const builder = new QueryBuilder
-		builder._subQuery = true
+		builder.parent = this
 
 		callback(builder)
 
@@ -325,32 +323,18 @@ export class QueryBuilder {
 		return this
 	}
 
-	aggregate(field, callback) {
-		return this._aggregate(TermsAggregator, field, callback)
-	}
+	build(fieldPrefix) {
+		const json = super.build(fieldPrefix)
 
-	histogram(field, callback) {
-		return this._aggregate(HistogramAggregator, field, callback)
-	}
-
-	dateHistogram(field, callback) {
-		return this._aggregate(DateHistogramAggregator, field, callback)
-	}
-
-	_aggregate(aggregatorType, field, callback) {
-		if(this._subQuery) {
-			throw new Error('`aggregate` may only be called on a top level query.')
+		if(json.query.isNil) {
+			json.query = { }
 		}
 
-		const aggregator = new aggregatorType(field)
-		callback(aggregator)
-		this._aggregators.push(aggregator)
+		const { query } = json
 
-		return this
-	}
-
-	build(fieldPrefix) {
-		const query = { bool: { } }
+		if(query.bool.isNil) {
+			query.bool = { }
+		}
 
 		if(this._must.length > 0) {
 			query.bool.must = this.buildConditions(fieldPrefix, this._must)
@@ -373,10 +357,10 @@ export class QueryBuilder {
 		}
 
 		if(Object.keys(query.bool).length === 0) {
-			return { }
+			delete json.query
 		}
 
-		return query
+		return json
 	}
 
 	buildConditions(fieldPrefix, conditions) {
@@ -489,9 +473,10 @@ export class QueryBuilder {
 	}
 
 	toBody() {
-		const body = { query: this.build(), _source: { } }
+		const body = this.build()
+		body._source = { }
 
-		if(body.query === null || Object.keys(body.query).length === 0) {
+		if(body.query.isNil || Object.keys(body.query).length === 0) {
 			delete body.query
 		}
 
@@ -504,23 +489,23 @@ export class QueryBuilder {
 		}
 
 		if(this._include.length > 0) {
+			if(body._source.isNil) {
+				body._source = { }
+			}
+
 			body._source.includes = this._include
 		}
 
 		if(this._exclude.length > 0) {
+			if(body._source.isNil) {
+				body._source = { }
+			}
+
 			body._source.excludes = this._exclude
 		}
 
 		if(Array.isArray(this._sort)) {
 			body.sort = this._sort[0]
-		}
-
-		if(this._aggregators.length > 0) {
-			body.aggregations = { }
-
-			for(const aggregator of this._aggregators) {
-				body.aggregations[aggregator.field] = aggregator.build()
-			}
 		}
 
 		return body

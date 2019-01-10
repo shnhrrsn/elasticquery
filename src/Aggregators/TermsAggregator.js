@@ -5,6 +5,7 @@ export class TermsAggregator extends BaseAggregator {
 	type = 'terms'
 	_include = null
 	_exclude = null
+	_size = 100
 
 	include(value) {
 		this._include = value
