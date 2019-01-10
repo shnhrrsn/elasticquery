@@ -53,6 +53,42 @@ test('terms + filter', t => {
 	})
 })
 
+test('terms + sums', t => {
+	const query = new QueryBuilder
+	query.aggregate(query => {
+		query.terms('field', query => {
+			query.aggregate(query => {
+				query.sum('nested.sum1', query => query.as('sum1'))
+				query.sum('sum2')
+			})
+		})
+	})
+
+	t.deepEqual(query.toBody(), {
+		_source: {},
+		aggregations: {
+			field: {
+				aggregations: {
+					sum1: {
+						sum: {
+							field: 'nested.sum1'
+						}
+					},
+					sum2: {
+						sum: {
+							field: 'sum2'
+						}
+					}
+				},
+				terms: {
+					field: 'field',
+					size: 100
+				}
+			}
+		}
+	})
+})
+
 test('date histogram', t => {
 	const query = new QueryBuilder
 	query.aggregate(aggregate => {

@@ -3,6 +3,7 @@ import './QueryComponent'
 import './Aggregators/DateHistogramAggregator'
 import './Aggregators/FilterAggregator'
 import './Aggregators/HistogramAggregator'
+import './Aggregators/SumAggregator'
 import './Aggregators/TermsAggregator'
 
 export class AggregateQuery extends QueryComponent {
@@ -44,6 +45,10 @@ export class AggregateQuery extends QueryComponent {
 
 	dateHistogram(field, callback) {
 		return this._aggregate(DateHistogramAggregator, field, callback)
+	}
+
+	sum(field, callback) {
+		return this._aggregate(SumAggregator, field, callback)
 	}
 
 	filter(callback) {
